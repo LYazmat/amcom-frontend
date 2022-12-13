@@ -6,24 +6,30 @@ import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-export default function CollapsibleRow(props) {
-  const { row } = props;
+export default function CollapsibleSaleRow(props) {
+  const sale = props.sale;
   const [open, setOpen] = React.useState(false);
+
+  const total_price = React.useMemo(() => {
+    console.log(sale);
+    return sale.items
+      .map((item) => item.product.price * item.amount)
+      .reduce((total, value) => total + value, 0)
+      .toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+  }, [sale]);
 
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
-            aria-label="expand row"
+            aria-label="expand sale"
             size="small"
             onClick={() => setOpen(!open)}
           >
@@ -31,12 +37,13 @@ export default function CollapsibleRow(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.name}
+          {sale.invoice}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell align="right">{sale.customer.name}</TableCell>
+        <TableCell align="right">{sale.seller.name}</TableCell>
+        <TableCell align="right">{sale.sale_datetime}</TableCell>
+        <TableCell align="right">{`R$ ${total_price}`}</TableCell>
+        <TableCell align="right">{"Opções"}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -55,16 +62,14 @@ export default function CollapsibleRow(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {[1, 2].map((id) => (
+                    <TableRow key={id}>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        {"Valor D"}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
+                      <TableCell>{"Valor A"}</TableCell>
+                      <TableCell align="right">{"Valor B"}</TableCell>
+                      <TableCell align="right">{"Valor C"}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -77,7 +82,9 @@ export default function CollapsibleRow(props) {
   );
 }
 
-CollapsibleRow.propTypes = {
+{
+  /* 
+CollapsibleSaleRow.propTypes = {
   row: PropTypes.shape({
     calories: PropTypes.number.isRequired,
     carbs: PropTypes.number.isRequired,
@@ -94,3 +101,5 @@ CollapsibleRow.propTypes = {
     protein: PropTypes.number.isRequired,
   }).isRequired,
 };
+*/
+}

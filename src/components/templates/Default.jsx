@@ -20,7 +20,7 @@ export default function Default(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Header toggleDrawer={toggleDrawer}></Header>
+      <Header title={props.title} toggleDrawer={toggleDrawer}></Header>
       <DrawerMenu toggleDrawer={toggleDrawer} open={open}></DrawerMenu>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
